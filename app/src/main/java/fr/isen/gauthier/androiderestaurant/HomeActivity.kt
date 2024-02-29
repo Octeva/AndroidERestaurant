@@ -6,15 +6,21 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
@@ -65,6 +73,7 @@ class HomeActivity : ComponentActivity(), MenuInterface {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     SetupView(this)
+
                 }
             }
         }
@@ -100,50 +109,33 @@ class HomeActivity : ComponentActivity(), MenuInterface {
 
 @Composable
 fun SetupView(menu: HomeActivity) {
+    val context = LocalContext.current
     Surface (
         modifier = Modifier.fillMaxWidth(),
         color = colorResource(id = R.color.background)
     ) {
 
         //Contenu du haut de la page
-        Row {
+        Column (horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = painterResource(R.drawable.manateelogo),
                 contentDescription = "logo picture",
                 modifier = Modifier
-                    // Espacer a gauche et en haut
-                    .padding(top = 10.dp)
                     // Taille de l'image
-                    .size(130.dp)
+                    .size(110.dp)
                     // Forme de l'image
                     .clip(CircleShape)
             )
 
-        Column (horizontalAlignment = Alignment.CenterHorizontally){
             Text(
-                text = "Le",
-                modifier = Modifier
-                    //Espace
-                    .padding(start = 1.dp, top = 15.dp),
-                // Augmenter la taille du texte
-                fontSize = 60.sp,
-                // Utiliser une police de caractères différente
-                fontFamily = FontFamily.Cursive,
-                fontWeight = FontWeight.ExtraBold
-            )
-            Text(
-                text = "Lamentin",
-                modifier = Modifier
-                    //Espace
-                    .padding(start = 1.dp),
-                // Augmenter la taille du texte
-                fontSize = 60.sp,
-                // Utiliser une police de caractères différente
-                fontFamily = FontFamily.Cursive,
-                fontWeight = FontWeight.ExtraBold
-            )
-        }
+                text = "Le Lamentin",
 
+                // Augmenter la taille du texte
+                fontSize = 60.sp,
+                // Utiliser une police de caractères différente
+                fontFamily = FontFamily.Cursive,
+                fontWeight = FontWeight.ExtraBold
+            )
         }
 
 
@@ -154,7 +146,7 @@ Column (horizontalAlignment = Alignment.CenterHorizontally){
         //separation
         Row(
             modifier = Modifier
-                .padding(top = 225.dp),
+                .padding(top = 220.dp),
             horizontalArrangement = Arrangement.spacedBy(100.dp)
         ) {
             Image(
@@ -183,7 +175,7 @@ Column (horizontalAlignment = Alignment.CenterHorizontally){
         //Separation
         Row(
             modifier = Modifier
-                .padding(top = 20.dp),
+                .padding(top = 5.dp),
             horizontalArrangement = Arrangement.spacedBy(100.dp)
         ) {
             Image(
@@ -209,7 +201,7 @@ Column (horizontalAlignment = Alignment.CenterHorizontally){
         CustomButton(type = DishType.MAIN, menu)
         Row(
             modifier = Modifier
-                .padding(top = 20.dp),
+                .padding(top = 5.dp),
             horizontalArrangement = Arrangement.spacedBy(100.dp)
         ) {
             Image(
@@ -233,9 +225,42 @@ Column (horizontalAlignment = Alignment.CenterHorizontally){
             )
         }
         CustomButton(type = DishType.DESSERT, menu)
+
+    Box(modifier = Modifier
+        .wrapContentSize(Alignment.TopEnd)
+        .padding(top = 10.dp, end = 5.dp)
+    ) {
+        OutlinedButton(
+            onClick = {
+                val intent = Intent(context, BasketActivity::class.java)
+                context.startActivity(intent)
+            },
+            modifier = Modifier
+                .size(80.dp)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.panier),
+
+                contentDescription = "logo picture",
+                modifier = Modifier
+                    .size(70.dp)
+            )
+        }
+        // Vignette ronde
+        Text(
+            text = BasketState.itemCountInBasket.value.toString(),
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .background(colorResource(id = R.color.card), shape = CircleShape)
+                .padding(4.dp)
+                .align(Alignment.TopEnd)
+        )
+    }
     }
     }
 }
+
 
 @Composable fun CustomButton(type: DishType, menu: MenuInterface) {
     TextButton(

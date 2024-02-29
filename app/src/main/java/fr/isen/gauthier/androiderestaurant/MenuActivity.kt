@@ -29,6 +29,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -132,8 +133,7 @@ fun MenuView(type: DishType){
                 verticalAlignment = Alignment.CenterVertically
             )
             {
-                Column(horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1f)) {
+                Column {
 
                 //Title fait reference a la fonction dans HomeActivity
                 Text(
@@ -143,20 +143,22 @@ fun MenuView(type: DishType){
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .align(Alignment.CenterHorizontally)
+                        .padding(start = 20.dp)
 
                 )}
+                Spacer(modifier = Modifier.weight(1f))
                 Box(modifier = Modifier
                     .wrapContentSize(Alignment.TopEnd)
                     .padding(end = 5.dp)
                     ) {
-                    Button(
+                    OutlinedButton(
                         onClick = {
                             val intent = Intent(context, BasketActivity::class.java)
                             context.startActivity(intent)
                         },
                         modifier = Modifier
-                            .size(80.dp)
+                            .size(75.dp)
                             .background(color = Color.Transparent, shape = CircleShape)
                     ) {
                         Image(
@@ -164,7 +166,7 @@ fun MenuView(type: DishType){
                             contentDescription = "logo picture",
                             modifier = Modifier
                                 .size(70.dp)
-                                .background(color = Color.Transparent, shape = CircleShape)
+
                         )
                     }
                     // Vignette ronde
@@ -173,7 +175,7 @@ fun MenuView(type: DishType){
                         color = Color.White,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .background(color = Color.Red, shape = CircleShape)
+                            .background(colorResource(id = R.color.card), shape = CircleShape)
                             .padding(4.dp)
                             .align(Alignment.TopEnd)
                     )
@@ -200,9 +202,7 @@ fun MenuView(type: DishType){
 fun dishRow(dish: Dish) {
     val context = LocalContext.current
     val cardColor = Color(0xFF783201).copy(alpha = 0.7f)
-    Card (
-
-        modifier = Modifier
+    Card (modifier = Modifier
             .padding(start = 10.dp, end = 10.dp)
             .padding(vertical = 15.dp)
             .clickable {

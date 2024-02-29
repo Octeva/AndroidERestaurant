@@ -1,6 +1,7 @@
 package fr.isen.gauthier.androiderestaurant
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -55,6 +57,7 @@ import kotlin.math.max
 
 class DetailActivity : ComponentActivity() {
 
+    @SuppressLint("SuspiciousIndentation")
     @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +70,13 @@ class DetailActivity : ComponentActivity() {
                 mutableIntStateOf(1)
             }
             Surface(
-                color = colorResource(id = R.color.background),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxSize(),
+                color = colorResource(id = R.color.background)
             ) {
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Row {
-
-
+                    Row(modifier = Modifier.padding(end = 15.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             painter = painterResource(R.drawable.manateelogo),
                             contentDescription = "logo picture",
@@ -89,23 +91,18 @@ class DetailActivity : ComponentActivity() {
                         Spacer(modifier = Modifier.weight(1f))
 
 
-//                        Text(
-//                            text = "Nombre d'articles dans le panier : ${BasketState.itemCountInBasket.value}",
-//                            modifier = Modifier
-//                                .padding(end = 15.dp)
-//                                .align(Alignment.CenterVertically)
-                        //)
+//
                         Box(modifier = Modifier
                             .wrapContentSize(Alignment.TopEnd)
                             .padding(end = 5.dp)
                         ) {
-                            Button(
+                           OutlinedButton(
                                 onClick = {
                                     val intent = Intent(context, BasketActivity::class.java)
-                                    context.startActivity(intent)
+                                       context.startActivity(intent)
                                 },
                                 modifier = Modifier
-                                    .size(80.dp)
+                                    .size(75.dp)
                                     .background(color = Color.Transparent, shape = CircleShape)
                             ) {
                                 Image(
@@ -122,13 +119,11 @@ class DetailActivity : ComponentActivity() {
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
-                                    .background(color = Color.Red, shape = CircleShape)
+                                    .background(colorResource(id = R.color.card), shape = CircleShape)
                                     .padding(4.dp)
                                     .align(Alignment.TopEnd)
                             )
                         }
-
-
                     }
                     //TopAppBar({ Text(dish?.name ?: "") })
                     dish?.let {
@@ -204,13 +199,13 @@ class DetailActivity : ComponentActivity() {
                         {
                             Text(
                                 text = "-",
-                                fontSize = 20.sp
+                                fontSize = 20.sp,
+                                color = Color.Black
                             )
                         }
 
                         //Quantite
-                        Text(
-                            text = count.value.toString(),
+                        Text(text = count.value.toString(),
                             fontSize = 30.sp,
                             fontFamily = FontFamily.Monospace,
                             modifier = Modifier.padding(horizontal = 24.dp)
@@ -224,14 +219,15 @@ class DetailActivity : ComponentActivity() {
                         {
                             Text(
                                 text = "+",
-                                fontSize = 20.sp
+                                fontSize = 20.sp,
+                                color = Color.Black
                             )
                         }
 
 
                     }
 
-                    Button(onClick = {
+                    OutlinedButton(onClick = {
                         if (dish != null) {
                             Basket.current(context).add(dish, count.value, context)
                             // Mise à jour immédiate de l'état pour refléter le changement
@@ -240,7 +236,8 @@ class DetailActivity : ComponentActivity() {
                     }) {
                         Text(
                             text = "Ajouter au panier",
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = Color.Black
                         )
                     }
                     Text(
