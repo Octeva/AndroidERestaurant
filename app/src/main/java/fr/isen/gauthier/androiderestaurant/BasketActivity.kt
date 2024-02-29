@@ -85,8 +85,8 @@ class BasketActivity : ComponentActivity() {
 //Fonction countItems pour compter le nombre d'element dans le panier
 public fun countItems(basketItems: MutableList<BasketItem>): Int {
     var count = 0
-    for (item in basketItems){
-        count +=item.count
+    for (item in basketItems) {
+        count += item.count
     }
     return count
 }
@@ -128,27 +128,37 @@ fun BasketView(initialTotalPrice: Int, countItem: Int) {
             }
             basketItems.addAll(Basket.current(context).items)
 
-            Box{
-            OutlinedButton(
-                onClick = {
-                          Toast.makeText(context, "Commande validée en preparation", Toast.LENGTH_LONG).show()
-                },
-                modifier = Modifier
-                    .padding(10.dp),
+            Box {
+                OutlinedButton(
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            "Commande validée en preparation",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    },
+                    modifier = Modifier
+                        .padding(10.dp),
 
-            ){
-                Text(text = "Panier : ${totalPrice.intValue} €",
-                    color = Color.Black) // Utilisez la valeur de totalPrice
-        }
-        }
+                    ) {
+                    Text(
+                        text = "Panier : ${totalPrice.intValue} €",
+                        color = Color.Black
+                    ) // Utilisez la valeur de totalPrice
+                }
+            }
         }
     }
 }
 
 
 @Composable
-fun BasketItemView(item: BasketItem, basketItems: MutableList<BasketItem>, totalPrice: MutableState<Int>) {
-    Card{
+fun BasketItemView(
+    item: BasketItem,
+    basketItems: MutableList<BasketItem>,
+    totalPrice: MutableState<Int>
+) {
+    Card {
 
         val context = LocalContext.current
         val count = remember {
@@ -195,44 +205,57 @@ fun BasketItemView(item: BasketItem, basketItems: MutableList<BasketItem>, total
 
 //                    Spacer(Modifier.weight(1f))
                     Row {
-                    OutlinedButton(onClick = {
+                        OutlinedButton(
+                            onClick = {
+                                if (count.value > 1) {
 
-                        count.value = max(1, count.value - 1)
+                                    count.value = max(1, count.value - 1)
 
-                            totalPrice.value -= item.dish.prices.firstOrNull()?.price?.toInt() ?: 0
-                            BasketState.updateItemCountInBasket(context)
-                            Toast.makeText(context, "Suppression d'un produit", Toast.LENGTH_LONG)
-                                .show()
-                            //updateItemQuantityInSharedPreferences(context, item, count.value)
-
-                                             },
-                        Modifier.size(25.dp)
+                                    totalPrice.value -= item.dish.prices.firstOrNull()?.price?.toInt()
+                                        ?: 0
+                                    BasketState.updateItemCountInBasket(context)
+                                    Toast.makeText(
+                                        context,
+                                        "Suppression d'un produit",
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
+                                    //updateItemQuantityInSharedPreferences(context, item, count.value)
+                                }
+                            },
+                            Modifier.size(25.dp)
                         )
-                    {
-                        Image(
-                            painter = painterResource(R.drawable.moins),
-                            contentDescription = "-",
-                            modifier = Modifier
-                                .size(20.dp)
-                                .background(color = Color.Transparent, shape = CircleShape)
-                        )
+                        {
+                            Image(
+                                painter = painterResource(R.drawable.moins),
+                                contentDescription = "-",
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .background(color = Color.Transparent, shape = CircleShape)
+                            )
 
-                    }
-                        Text(count.value.toString(),
+                        }
+                        Text(
+                            count.value.toString(),
                             modifier = Modifier
                                 .padding(start = 8.dp, end = 8.dp),
-                            fontSize = 20.sp)
+                            fontSize = 20.sp
+                        )
 
 
 
-                        OutlinedButton(onClick = {
-                            count.value = count.value + 1
-                            totalPrice.value += (item.dish.prices.firstOrNull()?.price?.toInt() ?: 0)
-                            BasketState.updateItemCountInBasket(context)
-                            Toast.makeText(context, "Rajout d'un produit", Toast.LENGTH_LONG).show()
-                        },
+                        OutlinedButton(
+                            onClick = {
+                                count.value = count.value + 1
+                                totalPrice.value += (item.dish.prices.firstOrNull()?.price?.toInt()
+                                    ?: 0)
+                                BasketState.updateItemCountInBasket(context)
+                                Toast.makeText(context, "Rajout d'un produit", Toast.LENGTH_LONG)
+                                    .show()
+                            },
                             Modifier
-                                .size(25.dp))
+                                .size(25.dp)
+                        )
                         {
                             Image(
                                 painter = painterResource(R.drawable.plus),
@@ -249,17 +272,21 @@ fun BasketItemView(item: BasketItem, basketItems: MutableList<BasketItem>, total
 
                 Spacer(Modifier.weight(1f))
 
-                OutlinedButton(onClick = {
-                    Basket.current(context).delete(item, context)
-                    basketItems.clear()
-                    basketItems.addAll(Basket.current(context).items)
-                    totalPrice.value = totalPriceUpdate(0, basketItems)
-                },
+                OutlinedButton(
+                    onClick = {
+                        Basket.current(context).delete(item, context)
+                        basketItems.clear()
+                        basketItems.addAll(Basket.current(context).items)
+                        totalPrice.value = totalPriceUpdate(0, basketItems)
+                    },
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red), // Changez la couleur du texte ici
-                    border = BorderStroke(0.dp, Color.Transparent)) {
-                    Text("X",
+                    border = BorderStroke(0.dp, Color.Transparent)
+                ) {
+                    Text(
+                        "X",
                         fontSize = 15.sp,
-                        color = Color.Red)
+                        color = Color.Red
+                    )
                 }
             }
         }

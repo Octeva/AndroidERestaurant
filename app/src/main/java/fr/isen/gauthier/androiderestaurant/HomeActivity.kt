@@ -25,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,6 +65,13 @@ interface MenuInterface {
 class HomeActivity : ComponentActivity(), MenuInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val basketItems = Basket.current(this).items.toMutableList()
+        BasketState.updateItemCountInBasket(this)
+
+
+        //Appel de la fonction pour compter le nombre d'element dans le panier
+        val countItem = mutableStateOf(countItems(basketItems))
+        countItem.value = countItems(basketItems)
         setContent {
             //getString(R.string.menu_starter)
             AndroidERestaurantTheme {
